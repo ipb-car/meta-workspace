@@ -12,6 +12,6 @@ meta_workspace_hash="$(git rev-parse HEAD)$(
 echo $meta_workspace_hash >$LATEST/git.hash
 
 # Log any difference in the code (if any)
-if [ -n "$(git diff origin/master)" ]; then
-  git diff master >$LATEST/git.patch
+if [ -n "$(git diff origin/main)" ]; then
+  git diff main >$LATEST/git.patch
 fi
