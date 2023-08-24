@@ -60,7 +60,7 @@ make docs
 ```
 
 Additionally, all the documentation of the car setup can be found at our
-[wiki](https://gitlab.ipb.uni-bonn.de/ipb-team/robots/ipb-car/docs).
+[wiki](https://github.com/ipb-car/wiki/wiki).
 
 ## Citation
 
