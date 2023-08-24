@@ -1,0 +1,14 @@
+name: ipb_car_record
+startup_window: record
+on_project_start: pkill rviz 2>/dev/null
+on_project_exit: rosnode kill /rosbag_recorder 2>/dev/null
+windows:
+  - record:
+      layout: tiled
+      panes:
+        # Launch the recording scripts
+        - roslaunch --wait ipb_car_launch record.launch time_now:=$(date +%Y-%m-%d-%H-%M-%S)
+        # Watch that we are not running away from space on the disk
+        - watch -n1 df -h /
+        # Watch how the bagfiles are being created, sleep so get the latest directory
+        - sleep 2 && watch -n1 ls -lah $(ls -td -- $ROS_BAGS | head -n 1)

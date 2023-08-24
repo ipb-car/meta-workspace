@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+export NOW=$(date +%Y-%m-%d-%H-%M-%S)
+export ROS_WS=$(catkin locate)
+export ROS_HOME=$ROS_WS/recordings/$NOW
+export LATEST=$ROS_WS/recordings/latest
+export ROS_CONFIG=$ROS_HOME/config
+export ROS_BAGS=$ROS_HOME/bags
+export LAUNCH_DIR=$ROS_WS/scripts
+export LAUNCH_INIT_DIR=$LAUNCH_DIR/init.d
+
+for script_file in "$LAUNCH_INIT_DIR"/*.sh; do
+  bash "$script_file"
+done
+
+# Launch the ipb_car_launch GUI
+tmuxinator start project ipb_car_launch -p ${LAUNCH_DIR}/ipb_car_launch.yaml

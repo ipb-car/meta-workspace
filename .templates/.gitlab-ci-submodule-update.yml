@@ -1,0 +1,16 @@
+update:
+  image: curlimages/curl
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_BRANCH == "master"'
+  stage: update
+  variables:
+    IPB_CAR_REPO: "$CI_API_V4_URL/projects/1148/"
+  script:
+    - echo "Updating $IPB_CAR_REPO meta repository"
+    - 'curl
+      -X POST
+      -F token=$TRIGGER_SUBMODULE_UPDATE
+      -F ref=master
+      -F "variables[COMMIT_HASH]=$CI_COMMIT_SHA"
+      -F "variables[SLAVE_REPOSITORY]=$CI_PROJECT_NAME"
+      $IPB_CAR_REPO/trigger/pipeline'

@@ -1,0 +1,10 @@
+name: ipb_car_record
+startup_window: record
+pre_window: export ROS_MASTER_URI=http://localhost:11311 && unset ROS_IP
+windows:
+  - rosbag:
+      layout: main_vertical
+      panes:
+        - roscore
+        - rosbag play -l $ROS_BAGS/*.bag
+        - sleep 1 && rviz -d $(rospack find ipb_car_launch)/config/ipb_car.rviz

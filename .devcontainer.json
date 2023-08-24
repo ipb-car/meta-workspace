@@ -1,0 +1,20 @@
+{
+	"name": "ipb_car",
+	"dockerComposeFile": "launch.yml",
+	"service": "launch",
+	"workspaceFolder": "/home/ipb_car/ros_ws",
+	"remoteUser": "ipb_car",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"llvm-vs-code-extensions.vscode-clangd",
+				"ms-python.python",
+				"ms-vscode.cpptools",
+				"ms-azuretools.vscode-docker",
+				"redhat.vscode-xml",
+				"twxs.cmake",
+				"vscode-icons-team.vscode-icons"
+			]
+		}
+	}
+}

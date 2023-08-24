@@ -1,0 +1,14 @@
+.env
+.gitlab-ci-local/
+.bash_history
+.build
+.check_interface
+.init
+.catkin_tools/
+src/
+build/
+log/
+logs/
+devel/
+install/
+recordings/

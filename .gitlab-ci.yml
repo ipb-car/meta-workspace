@@ -1,0 +1,63 @@
+# @file      .gitlab-ci.yml
+# @author    Ignacio Vizzo     [ivizzo@uni-bonn.de]
+#
+# Copyright (c) 2020 Ignacio Vizzo, all rights reserved
+image: gitlab.ipb.uni-bonn.de:4567/ipb-team/robots/ipb-car/docker_images/ros:humble
+
+# Job templates for the ros packages
+.job_template: &build
+  stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - colcon build --packages-up-to ${CI_JOB_NAME} --event-handlers console_direct+
+
+stages:
+  - pre-fetch
+  - build
+  - update
+
+ipb_car_launch:
+  <<: *build
+
+ipb_car_hardware:
+  <<: *build
+
+ipb_car_monitor:
+  <<: *build
+
+ouster_ros:
+  <<: *build
+
+pylon_ros2_camera_component:
+  <<: *build
+
+sbg_driver:
+  <<: *build
+
+pre-fetch:
+  stage: pre-fetch
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+  script:
+    - echo "Pulling latest changes from src/$SLAVE_REPOSITORY"
+    - git submodule update --remote src/$SLAVE_REPOSITORY
+    - echo "Checking out commit_sha set by slave repo $COMMIT_HASH"
+    - cd src/$SLAVE_REPOSITORY && git checkout $COMMIT_HASH
+
+update_submodule:
+  stage: update
+  image: curlimages/curl
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+  variables:
+    COMMIT_MSG: "Update ${SLAVE_REPOSITORY} submodule reference"
+  script:
+    - echo "Updating $SLAVE_REPOSITORY repository to commit $COMMIT_HASH"
+    - 'curl
+      --request PUT
+      --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN"
+      "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/submodules/${SLAVE_REPOSITORY}"
+      --data "branch=master&commit_sha=${COMMIT_HASH}&commit_message=$COMMIT_MSG"'
