@@ -35,4 +35,4 @@
 	url = ../raspbian.git
 [submodule "wiki"]
 	path = src/wiki
-	url = ../wiki.git
+	url = ../wiki.wiki.git
