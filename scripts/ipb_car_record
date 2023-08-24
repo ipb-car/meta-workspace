@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+ROS_WS=$(catkin locate)
+LAUNCH_DIR=$ROS_WS/scripts
+
+# Block excecution until ros master is available
+printf "%s" "Waiting for ROS master to start the recording session..."
+while ! rostopic list >/dev/null 2>&1; do
+    printf "%c" "."
+    sleep 1
+done
+
+# rostopic will hang until it recevies the msg
+printf "\n%s" "Waiting for ready to record message..."
+res=$(rostopic echo -n 1 /ready_to_record)
+printf "\n%s\n" "ipb_car system is online and ready to run"
+
+echo "[INFO]   Starting ipb_car_record session"
+echo "[WARNIG] rviz will be killed!"
+tmuxinator start project ipb_car_launch -p ${LAUNCH_DIR}/ipb_car_record.yaml

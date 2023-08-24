@@ -1,0 +1,52 @@
+version: "3.0"
+name: ipb_car
+
+networks:
+  virtual:
+    name: virtual
+    driver: ipvlan
+    driver_opts:
+      parent: ${NETWORK_INTERFACE:-thunderbolt0}
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+          gateway: 192.168.1.1
+          ip_range: 192.168.1.100/32
+
+services:
+  network:
+    image: none
+    profiles:
+      - virtual_networking
+    networks:
+      - virtual
+
+  build:
+    image: gitlab.ipb.uni-bonn.de:4567/ipb-team/robots/ipb-car/docker_images/polenta:latest
+    build: ./src/docker_images/images/polenta/
+    container_name: "ipb_car_build"
+    stdin_open: True
+    tty: True
+    privileged: True
+    network_mode: host
+    volumes:
+      - .:${ROS_WS_DOCKER:-/home/ipb_car/ros_ws}
+
+  launch:
+    extends: build
+    container_name: "ipb_car_launch"
+    network_mode: ${NETWORK_MODE:-virtual}
+    environment:
+      - DISPLAY=${DISPLAY:-0}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    extra_hosts:
+      - "lidar_ver:192.168.1.12" 
+      - "lidar_hor:192.168.1.13"
+      - "cam_front:192.168.1.20"
+      - "cam_left:192.168.1.21"
+      - "cam_right:192.168.1.22"
+      - "cam_rear:192.168.1.23"
+      - "pi:192.168.1.200"

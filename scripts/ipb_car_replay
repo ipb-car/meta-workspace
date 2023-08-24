@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "[INFO]   Starting ipb_car_replay session"
+ROS_WS=$(catkin locate)
+LAUNCH_DIR=$ROS_WS/scripts
+export ROS_BAGS=$ROS_WS/recordings/latest/bags/
+tmuxinator start project ipb_car_launch -p ${LAUNCH_DIR}/ipb_car_replay.yaml

@@ -1,0 +1,11 @@
+#!/bin/bash
+protected_branch='master'
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [ $protected_branch = $current_branch ]
+then
+    echo "You're not allow to push master"
+    exit 1
+else
+    exit 0
+fi

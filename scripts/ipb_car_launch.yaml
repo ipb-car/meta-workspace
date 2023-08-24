@@ -1,0 +1,29 @@
+name: ipb_car_launch
+startup_window: launcher
+windows:
+  - roscore:
+      panes:
+        - roscore
+  - launcher:
+      panes:
+        - roslaunch --wait ipb_car_launch launcher.launch
+  - visualizer:
+      panes:
+        - roslaunch --wait ipb_car_launch visualizer.launch
+  - monitor:
+      panes:
+        - roslaunch --wait ipb_car_launch monitor.launch
+  - diagnostics:
+      # Run tmux lsw -t ipb_car_launch to see a detailed list of windows with the layout string.
+      # For more details please see ipb-team/robots/ipb-car/ros-packages/ipb_car_launch#45
+      layout: 4e5e,183x46,0,0{91x46,0,0[91x9,0,0,14,91x8,0,10,26,91x13,0,19,28,91x13,0,33,27],91x46,92,0[91x10,92,0,16,91x8,92,11,24,91x10,92,20,29,91x15,92,31,30]} 
+      panes:
+        - htop
+        - ssh pi-docker htop
+        - until rostopic list; do sleep 1; done; rostopic hz /gps/sbg/sbg/gps_pos -w 100
+        - until rostopic list; do sleep 1; done; rostopic hz /cam_front/image_raw -w 100
+        - watch ssh pi timedatectl
+        - watch ssh pi chronyc sources
+        - ssh pi sudo ppstest /dev/pps0
+        - ssh pi journalctl -f -u ptp4l@eth0
+

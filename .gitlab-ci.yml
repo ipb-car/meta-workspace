@@ -1,0 +1,83 @@
+# @file      .gitlab-ci.yml
+# @author    Ignacio Vizzo     [ivizzo@uni-bonn.de]
+#
+# Copyright (c) 2020 Ignacio Vizzo, all rights reserved
+image: gitlab.ipb.uni-bonn.de:4567/ipb-team/robots/ipb-car/docker_images/ros:latest
+
+# Job templates for the ros packages
+.job_template: &build
+  stage: build
+  script:
+    - cd catkin_ws/
+    - catkin build --no-status --verbose ${CI_JOB_NAME}
+
+stages:
+  - pre-fetch
+  - configure
+  - build
+  - update
+
+pre-fetch:
+  stage: pre-fetch
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+  script:
+    - echo "Pulling latest changes from src/$SLAVE_REPOSITORY"
+    - git submodule update --remote src/$SLAVE_REPOSITORY
+    - echo "Checking out commit_sha set by slave repo $COMMIT_HASH"
+    - cd src/$SLAVE_REPOSITORY && git checkout $COMMIT_HASH
+
+configure:
+  stage: configure
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - mkdir -p catkin_ws/src/ && cd catkin_ws/
+    - rsync -ar --exclude '**/*.git/' $CI_PROJECT_DIR src/
+    - catkin init
+  artifacts:
+    expire_in: 10 m
+    untracked: false
+    paths:
+      - catkin_ws/
+
+sbg_driver:
+  <<: *build
+
+dnb_msgs:
+  <<: *build
+
+pylon_camera:
+  <<: *build
+
+ouster_ros:
+  <<: *build
+
+ipb_car_hardware:
+  <<: *build
+
+ipb_car_monitor:
+  <<: *build
+
+ipb_car_launch:
+  <<: *build
+
+pylon_camera_sync:
+  <<: *build
+
+update_submodule:
+  stage: update
+  image: curlimages/curl
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+  variables:
+    COMMIT_MSG: "Update ${SLAVE_REPOSITORY} submodule reference"
+  script:
+    - echo "Updating $SLAVE_REPOSITORY repository to commit $COMMIT_HASH"
+    - 'curl
+      --request PUT
+      --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN"
+      "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/submodules/${SLAVE_REPOSITORY}"
+      --data "branch=master&commit_sha=${COMMIT_HASH}&commit_message=$COMMIT_MSG"'

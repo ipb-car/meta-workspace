@@ -1,0 +1,38 @@
+# Own ROS Packages
+[submodule "ipb_car_monitor"]
+	path = src/ipb_car_monitor
+	url = ../ipb_car_monitor.git
+[submodule "ipb_car_launch"]
+	path = src/ipb_car_launch
+	url = ../ipb_car_launch.git
+[submodule "ipb_car_hardware"]
+	path = src/ipb_car_hardware
+	url = ../ipb_car_hardware.git
+[submodule "pylon_camera_sync"]
+	path = src/pylon_camera_sync
+	url = ../pylon_camera_sync.git
+
+# Sensor ROS Packages
+[submodule "ouster_lidar"]
+	path = src/ouster_lidar
+	url = https://github.com/ouster-lidar/ouster-ros.git
+[submodule "dragandbot_common"]
+	path = src/dragandbot_common
+	url = https://github.com/dragandbot/dragandbot_common.git
+[submodule "pylon-ros-camera"]
+	path = src/pylon-ros-camera
+	url = https://github.com/basler/pylon-ros-camera
+[submodule "sbg_ros_driver"]
+	path = src/sbg_ros_driver
+	url = https://github.com/SBG-Systems/sbg_ros_driver
+
+# Other stuff
+[submodule "docker_images"]
+	path = src/docker_images
+	url = ../docker_images.git
+[submodule "raspbian"]
+	path = src/raspbian
+	url = ../raspbian.git
+[submodule "wiki.wiki"]
+	path = src/wiki.wiki
+	url = ../wiki.wiki.git
