@@ -33,6 +33,6 @@
 [submodule "raspbian"]
 	path = src/raspbian
 	url = ../raspbian.git
-[submodule "wiki.wiki"]
-	path = src/wiki.wiki
-	url = ../wiki.wiki.git
+[submodule "wiki"]
+	path = src/wiki
+	url = ../wiki.git
