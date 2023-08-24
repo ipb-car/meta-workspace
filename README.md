@@ -1,11 +1,8 @@
 # IPB-Car meta-workspace
 
-If you want to know more about the infrastructure design, please check our
-[paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/vizzo2023itcsws.pdf)
+<img alt="IPB car Mounter" src="https://raw.githubusercontent.com/wiki/ipb-car/wiki/uploads/ipb-car-mounted-0.1.jpeg" width="53%"> <img alt="IPB car Body" src="https://raw.githubusercontent.com/wiki/ipb-car/wiki/uploads/ipb-car-body-0.2.png" width="44.8%">
 
-This repository is the mother of all the rest of the packages you need to run the ipb-car
-nodes. This is the only repo you need to launch all the sensors on the IPB car
-and record the topics.
+**NOTE:** This is a reference repository, Without the hardware setup using this code does not make any sense. It has been released to serve as a starting point for research teams/labs that want to implement the meta-workspace idea. If you want to know more about the infrastructure design, please check our [paper](https://www.ipb.uni-bonn.de/wp-content/papercite-data/pdf/vizzo2023itcsws.pdf)
 
 ## Installation
 
@@ -22,7 +19,7 @@ git clone git@github.com:ipb-car/meta-workspace.git
 make
 ```
 
-## Networking setup (SKIP if using polenta)
+## Networking setup
 
 On your machine, you can choose to use the `host` network or 
 the `virtual` one. Choosing the `host` network will give you internet
@@ -42,12 +39,6 @@ export NETWORK_INTERFACE=eth0 # might be different on your machine!
 
 ```sh
 export NETWORK_MODE=host
-```
-
-## Start
-
-```sh
-make start
 ```
 
 ## Launch
@@ -80,7 +71,7 @@ If you use this meta-workspace for any academic work, please cite our original
 @inproceedings{vizzo2023itscws,
   title         = {{Toward Reproducible Version-Controlled Perception Platforms: Embracing Simplicity in Autonomous Vehicle Dataset Acquisition}},
   author        = {Vizzo, Ignacio and Mersch, Benedikt and Nunes, Lucas and Wiesmann, Louis and Guadagnino, Tiziano and Stachniss, Cyrill},
-  booktitle     = {Worshop on Building Reliable Ratasets for Autonomous Vehicles, IEEE Intl.~Conf.~on Intelligent Transportation Systems (ITSC)},
+  booktitle     = {Worshop on Building Reliable Datasets for Autonomous Vehicles, IEEE Intl.~Conf.~on Intelligent Transportation Systems (ITSC)},
   year          = 2023
 }
 ```
