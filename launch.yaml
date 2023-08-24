@@ -22,7 +22,7 @@ services:
       - virtual
 
   build:
-    image: gitlab.ipb.uni-bonn.de:4567/ipb-team/robots/ipb-car/docker_images/polenta:latest
+    image: prbonn/polenta:latest
     build: ./src/docker_images/images/polenta/
     container_name: "ipb_car_build"
     stdin_open: True

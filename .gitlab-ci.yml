@@ -2,7 +2,7 @@
 # @author    Ignacio Vizzo     [ivizzo@uni-bonn.de]
 #
 # Copyright (c) 2020 Ignacio Vizzo, all rights reserved
-image: gitlab.ipb.uni-bonn.de:4567/ipb-team/robots/ipb-car/docker_images/ros:latest
+image: prbonn/ros:noetic
 
 # Job templates for the ros packages
 .job_template: &build
