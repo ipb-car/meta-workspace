@@ -56,8 +56,8 @@ clean:
 	@git checkout .
 	@rm -rf .build .catkin_tools .init build/ devel/ logs/
 
-docs:
+wiki:
 	@echo "Serving wiki locally..."
-	@docker stop docs 2>/dev/null || true
-	@docker run --rm -p 4567:4567 -v $(shell pwd):/app --workdir /app/src/docs --name docs -d gollumwiki/gollum:master >/dev/null
+	@docker stop ipb_car_wiki 2>/dev/null || true
+	@docker run --rm -p 4567:4567 -v $(shell pwd):/app --workdir /app/src/wiki --name ipb_car_wiki -d gollumwiki/gollum:master >/dev/null
 	@sleep 2 && xdg-open "http://localhost:4567/" >/dev/null || true
